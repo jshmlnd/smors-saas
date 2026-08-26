@@ -19,7 +19,16 @@ api.interceptors.request.use((config) => {
 })
 
 api.interceptors.response.use(
-  (res) => res,
+  (res) => {
+    const ct = String(res.headers?.['content-type'] || '')
+    if ((ct.includes('text/html') || (typeof res.data === 'string' && res.data.trimStart().startsWith('<')))) {
+      const err = new Error('API returned HTML — backend not reachable at this origin')
+      err.friendly = 'Server unavailable — please try again later'
+      err.isBadGateway = true
+      return Promise.reject(err)
+    }
+    return res
+  },
   (err) => {
     const status = err.response?.status
     if (status === 401) {

@@ -16,7 +16,7 @@ export default function FeaturedDrops() {
       .get('/products', { params: { featured: 'true', limit: 8 } })
       .then((res) => {
         if (!live) return
-        setItems(res.data.items)
+        setItems(Array.isArray(res.data.items) ? res.data.items : [])
         setState('done')
       })
       .catch(() => live && setState('error'))
