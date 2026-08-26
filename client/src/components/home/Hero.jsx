@@ -1,7 +1,9 @@
-import { useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import { ArrowDown, ArrowRight } from 'lucide-react'
+import api from '../../lib/api.js'
+import { peso } from '../../lib/format.js'
 import { BRAND } from '../../lib/constants.js'
 import SmartImage from '../ui/SmartImage.jsx'
 
@@ -22,39 +24,48 @@ function RevealLine({ children, delay = 0, className = '' }) {
   )
 }
 
-const FLOAT_CARDS = [
+const CARD_SLOTS = [
   {
-    src: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80',
-    label: 'AF1 · Like New',
-    price: '₱2,800',
     className: 'right-[6%] top-[14%] w-40 md:w-52 rotate-[6deg]',
     depth: 26,
-    floatDelay: '0s'
+    floatDelay: '0s',
+    enterDelay: 0.6
   },
   {
-    src: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=600&q=80',
-    label: 'Leather Bomber',
-    price: '₱1,900',
     className: 'right-[24%] top-[42%] w-44 md:w-56 -rotate-[7deg]',
     depth: 16,
-    floatDelay: '1.2s'
+    floatDelay: '1.2s',
+    enterDelay: 0.78
   },
   {
-    src: 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&w=600&q=80',
-    label: 'Vintage Tees',
-    price: 'from ₱280',
     className: 'right-[2%] top-[58%] w-36 md:w-44 rotate-[10deg]',
     depth: 34,
-    floatDelay: '2s'
+    floatDelay: '2s',
+    enterDelay: 0.96
   }
 ]
 
 export default function Hero() {
   const ref = useRef(null)
+  const [products, setProducts] = useState([])
   const mx = useMotionValue(0)
   const my = useMotionValue(0)
   const sx = useSpring(mx, { stiffness: 50, damping: 16 })
   const sy = useSpring(my, { stiffness: 50, damping: 16 })
+
+  useEffect(() => {
+    let live = true
+    api
+      .get('/products', { params: { limit: 3 } })
+      .then((res) => {
+        if (!live) return
+        setProducts(Array.isArray(res.data.items) ? res.data.items.slice(0, CARD_SLOTS.length) : [])
+      })
+      .catch(() => {})
+    return () => {
+      live = false
+    }
+  }, [])
 
   const onMouseMove = (e) => {
     const rect = ref.current?.getBoundingClientRect()
@@ -145,9 +156,9 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        <div className="relative hidden min-h-[420px] lg:block" aria-hidden>
-          {FLOAT_CARDS.map((card, i) => (
-            <FloatCard key={card.label} card={card} i={i} sx={sx} sy={sy} />
+        <div className="relative hidden min-h-[420px] lg:block">
+          {products.map((product, i) => (
+            <FloatCard key={product._id} product={product} slot={CARD_SLOTS[i]} i={i} sx={sx} sy={sy} />
           ))}
         </div>
       </div>
@@ -171,27 +182,37 @@ export default function Hero() {
   )
 }
 
-function FloatCard({ card, i, sx, sy }) {
-  const x = useTransform(sx, (v) => v * card.depth)
-  const y = useTransform(sy, (v) => v * card.depth * 0.6)
+function FloatCard({ product, slot, i, sx, sy }) {
+  const x = useTransform(sx, (v) => v * slot.depth)
+  const y = useTransform(sy, (v) => v * slot.depth * 0.6)
 
   return (
     <motion.div
       style={{ x, y }}
       initial={{ opacity: 0, scale: 0.85, rotate: 0 }}
       animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.9, delay: 0.6 + i * 0.18, ease: EASE }}
-      className={`absolute ${card.className}`}
+      transition={{ duration: 0.9, delay: slot.enterDelay + i * 0.05, ease: EASE }}
+      className={`absolute ${slot.className}`}
     >
-      <div className="animate-floaty overflow-hidden rounded-2xl border border-white/12 bg-zinc-950 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.9)]" style={{ animationDelay: card.floatDelay }}>
-        <SmartImage src={card.src} alt="" className="aspect-square w-full" />
-        <div className="flex items-center justify-between px-3 py-2.5">
-          <span className="text-[0.6rem] font-semibold uppercase tracking-widest text-zinc-300">
-            {card.label}
+      <Link
+        to={`/product/${product.slug}`}
+        aria-label={`${product.name} — ${peso(product.price)}`}
+        className="group block animate-floaty overflow-hidden rounded-2xl border border-white/12 bg-zinc-950 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.9)] transition-colors hover:border-silver/60"
+        style={{ animationDelay: slot.floatDelay }}
+      >
+        <SmartImage
+          src={product.images?.[0]}
+          alt=""
+          category={product.category}
+          className="aspect-square w-full transition-transform duration-500 group-hover:scale-105"
+        />
+        <div className="flex items-center justify-between gap-2 px-3 py-2.5">
+          <span className="truncate text-[0.6rem] font-semibold uppercase tracking-widest text-zinc-300">
+            {product.name}
           </span>
-          <span className="font-display text-sm text-silver">{card.price}</span>
+          <span className="shrink-0 font-display text-sm text-silver">{peso(product.price)}</span>
         </div>
-      </div>
+      </Link>
     </motion.div>
   )
 }
