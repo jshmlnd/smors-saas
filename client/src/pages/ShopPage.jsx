@@ -11,8 +11,8 @@ import { cn, pageWindow } from '../lib/format.js'
 
 const SORTS = [
   { id: 'newest', label: 'Newest' },
-  { id: 'price-asc', label: 'Price ↑' },
-  { id: 'price-desc', label: 'Price ↓' },
+  { id: 'price-desc', label: 'Price ↑' },
+  { id: 'price-asc', label: 'Price ↓' },
   { id: 'name-asc', label: 'A–Z' }
 ]
 
