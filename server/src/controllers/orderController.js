@@ -143,3 +143,17 @@ export const updateOrderStatus = asyncHandler(async (req, res) => {
   await order.save()
   res.json({ order })
 })
+
+export const updateOrderTracking = asyncHandler(async (req, res) => {
+  const trackingNumber = String(req.body?.trackingNumber || '').trim().slice(0, 60)
+
+  const order = await Order.findById(req.params.id)
+  if (!order) throw httpError(404, 'Order not found')
+  if (order.shippingMethod !== 'jt') {
+    throw httpError(400, 'Tracking number only applies to J&T Express orders')
+  }
+
+  order.trackingNumber = trackingNumber
+  await order.save()
+  res.json({ order })
+})

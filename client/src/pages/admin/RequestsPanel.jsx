@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import api from '../../lib/api.js'
 import { formatDate, cn } from '../../lib/format.js'
@@ -16,21 +16,38 @@ const TYPE_LABELS = {
   other: 'Other'
 }
 
+const POLL_MS = 10000
+
 export default function RequestsPanel({ onChange }) {
   const [requests, setRequests] = useState([])
   const [state, setState] = useState('loading')
   const [filter, setFilter] = useState('')
+  const busy = useRef(false)
   const toast = useUiStore((s) => s.toast)
 
-  useEffect(() => {
+  const load = useCallback((silent = false) => {
+    if (!silent) setState('loading')
     api
       .get('/service-requests')
       .then((res) => {
         setRequests(res.data.requests)
         setState('done')
       })
-      .catch(() => setState('error'))
+      .catch(() => {
+        if (!silent) setState('error')
+      })
   }, [])
+
+  useEffect(() => {
+    load()
+  }, [load])
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      if (!document.hidden && !busy.current) load(true)
+    }, POLL_MS)
+    return () => clearInterval(id)
+  }, [load])
 
   const visible = useMemo(
     () => (filter ? requests.filter((r) => r.status === filter) : requests),
@@ -38,12 +55,16 @@ export default function RequestsPanel({ onChange }) {
   )
 
   const update = async (req, patch) => {
+    busy.current = true
     setRequests((prev) => prev.map((r) => (r._id === req._id ? { ...r, ...patch } : r)))
     try {
       await api.put(`/service-requests/${req._id}`, patch)
       onChange?.()
     } catch (err) {
       toast(err.friendly || 'Update failed', 'error')
+      load()
+    } finally {
+      busy.current = false
     }
   }
 

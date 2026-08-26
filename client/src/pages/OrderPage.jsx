@@ -5,7 +5,7 @@ import api from '../lib/api.js'
 import { peso, formatDateTime, cn, copyText } from '../lib/format.js'
 import { ORDER_TIMELINE, ORDER_STATUS_META, PAYMENT_METHODS, SHIPPING_METHODS } from '../lib/constants.js'
 import SmartImage from '../components/ui/SmartImage.jsx'
-import { ArrowRight, Check, Copy, Sparkles, Truck } from 'lucide-react'
+import { ArrowRight, Check, Copy, Package, Sparkles, Truck } from 'lucide-react'
 import Loader from '../components/ui/Loader.jsx'
 import EmptyState from '../components/ui/EmptyState.jsx'
 import { useUiStore } from '../store/uiStore.js'
@@ -133,6 +133,22 @@ export default function OrderPage() {
                 <Truck size={15} className="shrink-0 text-silver" />
                 <span>{shipping?.label} · {shipping?.eta}</span>
               </div>
+              {order.shippingMethod === 'jt' && order.trackingNumber && (
+                <button
+                  onClick={async () => {
+                    await copyText(order.trackingNumber)
+                    toast('Tracking number copied', 'success')
+                  }}
+                  className="mt-2 flex w-full items-center gap-2 rounded-lg border border-silver/30 bg-white/[0.05] px-3 py-2 text-xs transition hover:border-silver"
+                >
+                  <Package size={15} className="shrink-0 text-silver" />
+                  <span className="flex-1 text-left text-zinc-400">
+                    J&T tracking
+                    <span className="ml-2 font-mono font-semibold uppercase tracking-wider text-zinc-100">{order.trackingNumber}</span>
+                  </span>
+                  <Copy size={13} className="shrink-0 text-zinc-500" aria-hidden />
+                </button>
+              )}
             </Panel>
 
             <Panel title={`Payment · ${payment?.label}`}>

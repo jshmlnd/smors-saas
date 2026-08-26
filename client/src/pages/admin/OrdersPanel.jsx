@@ -1,15 +1,16 @@
-import { Fragment, useEffect, useMemo, useState } from 'react'
+import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import api from '../../lib/api.js'
 import { peso, formatDateTime, cn } from '../../lib/format.js'
 import { ORDER_STATUS_META, PAYMENT_METHODS, SHIPPING_METHODS } from '../../lib/constants.js'
 import SmartImage from '../../components/ui/SmartImage.jsx'
-import { ExternalLink } from 'lucide-react'
+import { ExternalLink, Package } from 'lucide-react'
 import Loader from '../../components/ui/Loader.jsx'
 import EmptyState from '../../components/ui/EmptyState.jsx'
 import { useUiStore } from '../../store/uiStore.js'
 
 const STATUSES = Object.keys(ORDER_STATUS_META)
+const POLL_MS = 10000
 
 export default function OrdersPanel({ onChange }) {
   const [orders, setOrders] = useState([])
@@ -17,20 +18,44 @@ export default function OrdersPanel({ onChange }) {
   const [filter, setFilter] = useState('')
   const [q, setQ] = useState('')
   const [open, setOpen] = useState(null)
+  const [trackingDraft, setTrackingDraft] = useState('')
+  const busy = useRef(false)
   const toast = useUiStore((s) => s.toast)
 
-  const load = () => {
-    setState('loading')
+  const load = useCallback((silent = false) => {
+    if (!silent) setState('loading')
     api
       .get('/orders')
       .then((res) => {
         setOrders(res.data.orders)
         setState('done')
       })
-      .catch(() => setState('error'))
-  }
+      .catch(() => {
+        if (!silent) setState('error')
+      })
+  }, [])
 
-  useEffect(load, [])
+  useEffect(() => {
+    load()
+  }, [load])
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      if (!document.hidden && !busy.current) load(true)
+    }, POLL_MS)
+    return () => clearInterval(id)
+  }, [load])
+
+  useEffect(() => {
+    if (!open) {
+      setTrackingDraft('')
+      return
+    }
+    const current = orders.find((x) => x._id === open)
+    setTrackingDraft(current?.trackingNumber || '')
+    // deliberately keyed on `open` only — polling must not clobber typing
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open])
 
   const visible = useMemo(() => {
     let list = orders
@@ -48,6 +73,7 @@ export default function OrdersPanel({ onChange }) {
   }, [orders, filter, q])
 
   const setStatus = async (order, status) => {
+    busy.current = true
     setOrders((prev) => prev.map((o) => (o._id === order._id ? { ...o, status } : o)))
     try {
       await api.put(`/orders/${order._id}/status`, { status })
@@ -56,6 +82,26 @@ export default function OrdersPanel({ onChange }) {
     } catch (err) {
       toast(err.friendly || 'Update failed', 'error')
       load()
+    } finally {
+      busy.current = false
+    }
+  }
+
+  const saveTracking = async (order) => {
+    busy.current = true
+    try {
+      const { data } = await api.put(`/orders/${order._id}/tracking`, { trackingNumber: trackingDraft })
+      setOrders((prev) =>
+        prev.map((o) => (o._id === order._id ? { ...o, trackingNumber: data.order.trackingNumber } : o))
+      )
+      toast(
+        data.order.trackingNumber ? `Tracking saved for ${order.refCode}` : `Tracking cleared for ${order.refCode}`,
+        'success'
+      )
+    } catch (err) {
+      toast(err.friendly || 'Could not save tracking', 'error')
+    } finally {
+      busy.current = false
     }
   }
 
@@ -138,6 +184,12 @@ export default function OrdersPanel({ onChange }) {
                         </td>
                         <td className="hidden whitespace-nowrap xl:table-cell">
                           <span className="text-sm capitalize">{SHIPPING_METHODS.find((m) => m.id === o.shippingMethod)?.label.split(' ')[0]}</span>
+                          {o.trackingNumber && (
+                            <p className="mt-0.5 flex items-center gap-1 font-mono text-[0.6rem] uppercase text-zinc-500">
+                              <Package size={10} className="shrink-0" />
+                              {o.trackingNumber}
+                            </p>
+                          )}
                         </td>
                         <td onClick={(e) => e.stopPropagation()}>
                           <select
@@ -184,6 +236,30 @@ export default function OrdersPanel({ onChange }) {
                                 <p className="text-sm text-zinc-300">Shipping {o.shippingFee === 0 ? 'FREE' : peso(o.shippingFee)}</p>
                                 <p className="mt-1 font-display text-lg tracking-wide text-silver">{peso(o.total)}</p>
                                 {o.paymentRefNo && <p className="mt-2 text-xs text-zinc-500">Pay ref: {o.paymentRefNo}</p>}
+                                {o.shippingMethod === 'jt' && (
+                                  <form
+                                    onSubmit={(e) => {
+                                      e.preventDefault()
+                                      saveTracking(o)
+                                    }}
+                                    className="mt-4 border-t border-white/10 pt-3"
+                                  >
+                                    <label className="field-label flex items-center gap-1.5">
+                                      <Package size={12} className="text-silver" /> J&T tracking no.
+                                    </label>
+                                    <div className="flex gap-2">
+                                      <input
+                                        value={trackingDraft}
+                                        onChange={(e) => setTrackingDraft(e.target.value)}
+                                        placeholder="e.g. 861234567890"
+                                        className="input h-9 min-h-0 flex-1 border-white/15 bg-white/[0.04] font-mono text-xs uppercase focus:border-silver/60 focus:outline-none placeholder:text-zinc-600"
+                                      />
+                                      <button type="submit" className="btn-silver h-9 shrink-0 !px-4 !text-[0.6rem]">
+                                        Save
+                                      </button>
+                                    </div>
+                                  </form>
+                                )}
                               </div>
                             </div>
                           </td>

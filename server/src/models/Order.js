@@ -45,6 +45,7 @@ const orderSchema = new Schema(
     },
     shippingMethod: { type: String, enum: SHIPPING_METHODS, required: true },
     shippingFee: { type: Number, required: true, min: 0 },
+    trackingNumber: { type: String, trim: true, default: '' },
     paymentMethod: { type: String, enum: PAYMENT_METHODS, required: true },
     paymentProofUrl: { type: String, default: '' },
     paymentRefNo: { type: String, trim: true, default: '' },

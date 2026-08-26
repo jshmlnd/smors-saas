@@ -64,19 +64,19 @@ function ProductCard({ product, index = 0 }) {
             <Heart size={16} className={wished ? 'fill-current' : ''} />
           </button>
 
-          <div className="absolute left-3 top-3 flex flex-col gap-1.5">
+          <div className="absolute left-3 top-3 flex flex-col items-start gap-1.5">
             {product.condition && (
-              <span className="rounded-full border border-white/15 bg-black/50 px-2.5 py-1 text-[0.6rem] font-semibold uppercase tracking-[0.15em] text-zinc-300 backdrop-blur-md">
+              <span className="inline-flex h-6 w-[5.25rem] items-center justify-center whitespace-nowrap rounded-full border border-white/15 bg-black/50 px-2 text-[0.6rem] font-semibold uppercase tracking-[0.12em] text-zinc-300 backdrop-blur-md">
                 {product.condition}
               </span>
             )}
             {soldOut ? (
-              <span className="rounded-full bg-red-500/90 px-2.5 py-1 text-[0.6rem] font-bold uppercase tracking-[0.15em] text-white">
+              <span className="inline-flex h-6 w-[5.25rem] items-center justify-center whitespace-nowrap rounded-full bg-red-500/90 px-2 text-[0.6rem] font-bold uppercase tracking-[0.12em] text-white">
                 Sold
               </span>
             ) : (
               product.stock === 1 && (
-                <span className="rounded-full bg-silver px-2.5 py-1 text-[0.6rem] font-bold uppercase tracking-[0.15em] text-black">
+                <span className="inline-flex h-6 w-[5.25rem] items-center justify-center whitespace-nowrap rounded-full bg-silver px-2 text-[0.6rem] font-bold uppercase tracking-[0.12em] text-black">
                   Last piece
                 </span>
               )

@@ -38,6 +38,10 @@ export default function AdminDashboardPage() {
 
   useEffect(() => {
     refreshStats()
+    const id = setInterval(() => {
+      if (!document.hidden) refreshStats()
+    }, 10000)
+    return () => clearInterval(id)
   }, [refreshStats])
 
   return (
@@ -75,10 +79,20 @@ export default function AdminDashboardPage() {
               <span className={`relative text-xs font-semibold uppercase tracking-widest ${tab === t.id ? 'text-black' : 'text-zinc-400'}`}>
                 {t.label}
                 {t.id === 'orders' && stats?.pendingCount > 0 && (
-                  <span className="ml-1.5 opacity-70">·{stats.pendingCount}</span>
+                  <span
+                    title={`${stats.pendingCount} awaiting payment review`}
+                    className="ml-2 inline-grid h-[1.1rem] min-w-[1.1rem] place-items-center rounded-full bg-red-500 px-1.5 align-middle text-[0.6rem] font-bold leading-none text-white"
+                  >
+                    {stats.pendingCount}
+                  </span>
                 )}
                 {t.id === 'requests' && stats?.requestCount > 0 && (
-                  <span className="ml-1.5 opacity-70">·{stats.requestCount}</span>
+                  <span
+                    title={`${stats.requestCount} open requests`}
+                    className="ml-2 inline-grid h-[1.1rem] min-w-[1.1rem] place-items-center rounded-full bg-amber-400 px-1.5 align-middle text-[0.6rem] font-bold leading-none text-black"
+                  >
+                    {stats.requestCount}
+                  </span>
                 )}
               </span>
             </button>

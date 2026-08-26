@@ -4,7 +4,8 @@ import {
   getOrderByRef,
   listOrders,
   trackByRefs,
-  updateOrderStatus
+  updateOrderStatus,
+  updateOrderTracking
 } from '../controllers/orderController.js'
 import { requireAdmin } from '../middleware/auth.js'
 
@@ -15,5 +16,6 @@ router.post('/track', trackByRefs)
 router.get('/ref/:ref', getOrderByRef)
 router.get('/', requireAdmin, listOrders)
 router.put('/:id/status', requireAdmin, updateOrderStatus)
+router.put('/:id/tracking', requireAdmin, updateOrderTracking)
 
 export default router
