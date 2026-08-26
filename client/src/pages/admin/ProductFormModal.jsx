@@ -107,7 +107,7 @@ export default function ProductFormModal({ product, onClose, onSaved }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[70] grid place-items-center overflow-y-auto bg-black/80 p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-[70] flex justify-center overflow-y-auto bg-black/80 p-4 backdrop-blur-sm"
       onClick={onClose}
     >
       <motion.form
@@ -117,7 +117,7 @@ export default function ProductFormModal({ product, onClose, onSaved }) {
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: 20, scale: 0.97 }}
         transition={{ type: 'spring', stiffness: 320, damping: 30 }}
-        className="w-full max-w-2xl rounded-2xl border border-white/12 bg-zinc-950 p-6 md:p-8"
+        className="my-auto w-full max-w-2xl rounded-2xl border border-white/12 bg-zinc-950 p-6 md:p-8"
       >
         <div className="flex items-center justify-between">
           <h3 className="font-display text-2xl uppercase tracking-wider">
@@ -173,7 +173,7 @@ export default function ProductFormModal({ product, onClose, onSaved }) {
                     type="button"
                     aria-label="Remove image"
                     onClick={() => setForm((f) => ({ ...f, images: f.images.filter((_, x) => x !== i) }))}
-                    className="absolute -right-1.5 -top-1.5 grid h-5 w-5 place-items-center rounded-full bg-red-500 text-white opacity-0 transition group-hover:opacity-100"
+                    className="absolute -right-1.5 -top-1.5 grid h-5 w-5 place-items-center rounded-full bg-red-500 text-white opacity-0 transition tap-show group-hover:opacity-100"
                   >
                     <X size={11} strokeWidth={2.5} />
                   </button>
@@ -186,7 +186,7 @@ export default function ProductFormModal({ product, onClose, onSaved }) {
           )}
         </Field>
 
-        <div className="mt-6 flex items-center gap-6 border-t border-white/8 pt-5">
+        <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-4 border-t border-white/8 pt-5">
           <label className="flex cursor-pointer items-center gap-2.5 text-sm text-zinc-300">
             <input type="checkbox" checked={Boolean(form.featured)} onChange={set('featured')} className="toggle toggle-sm border-white/20 bg-zinc-700 checked:border-transparent checked:bg-gradient-to-b checked:from-[#ececf1] checked:to-[#c6c6cc]" />
             Featured drop

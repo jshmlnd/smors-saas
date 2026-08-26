@@ -68,7 +68,7 @@ export default function AdminDashboardPage() {
 
         <div className="mt-10 flex gap-1 rounded-full border border-white/10 bg-white/[0.03] p-1 sm:w-fit">
           {TABS.map((t) => (
-            <button key={t.id} onClick={() => setTab(t.id)} className="relative rounded-full px-5 py-2">
+            <button key={t.id} onClick={() => setTab(t.id)} className="relative flex-1 rounded-full px-3 py-2 text-center sm:flex-none sm:px-5">
               {tab === t.id && (
                 <motion.span
                   layoutId="admin-tab"

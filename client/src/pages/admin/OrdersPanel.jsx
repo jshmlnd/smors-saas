@@ -133,8 +133,8 @@ export default function OrdersPanel({ onChange }) {
       {visible.length === 0 ? (
         <EmptyState title="No orders here" subtitle="New orders land in this queue the moment they're placed." />
       ) : (
-        <div className="overflow-hidden rounded-2xl border border-white/8">
-          <table className="table">
+        <div className="overflow-x-auto rounded-2xl border border-white/8">
+          <table className="table min-w-[640px]">
             <thead>
               <tr className="border-white/8 text-[0.58rem] uppercase tracking-[0.22em] text-zinc-500">
                 <th className="bg-transparent">Order</th>

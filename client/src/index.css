@@ -70,7 +70,8 @@ html {
 body {
   background-color: var(--color-base-100);
   color: var(--color-base-content);
-  overflow-x: hidden;
+  /* clip (not hidden) — still prevents horizontal scroll but keeps position: sticky working */
+  overflow-x: clip;
 }
 
 button,

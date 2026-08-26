@@ -139,7 +139,7 @@ function BeforeAfter() {
           onMouseLeave={() => (dragging.current = false)}
           onTouchStart={(e) => move(e.touches[0].clientX)}
           onTouchMove={(e) => move(e.touches[0].clientX)}
-          className="relative aspect-[16/9] cursor-ew-resize select-none overflow-hidden rounded-2xl border border-white/10"
+          className="relative aspect-[16/9] cursor-ew-resize touch-pan-y select-none overflow-hidden rounded-2xl border border-white/10"
         >
           <img
             src="/img/restore-after.jpg"

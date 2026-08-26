@@ -141,7 +141,7 @@ export default function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.9, delay: 1.1 }}
-            className="mt-14 flex gap-8 border-t border-white/8 pt-6 md:gap-12"
+            className="mt-10 flex gap-8 border-t border-white/8 pt-6 md:mt-14 md:gap-12"
           >
             {[
               ['1K+', 'Pieces revived'],
@@ -160,7 +160,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 1.15, ease: EASE }}
-              className="mt-10 lg:hidden"
+              className="mt-8 md:mt-10 lg:hidden"
             >
               <p className="field-label !mb-3">Fresh on the rack</p>
               <div className="-mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">

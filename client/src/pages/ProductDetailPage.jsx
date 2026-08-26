@@ -135,14 +135,14 @@ export default function ProductDetailPage() {
               </div>
 
               {images.length > 1 && (
-                <div className="mt-3 flex gap-3">
+                <div className="-mx-4 mt-3 flex gap-3 overflow-x-auto px-4 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:-mx-0 md:px-0">
                   {images.map((src, i) => (
                     <button
                       key={i}
                       onClick={() => setImgIndex(i)}
                       aria-label={`View image ${i + 1}`}
                       className={cn(
-                        'aspect-square w-20 overflow-hidden rounded-xl border transition',
+                        'aspect-square w-20 shrink-0 snap-start overflow-hidden rounded-xl border transition',
                         i === imgIndex ? 'border-silver' : 'border-white/10 opacity-60 hover:opacity-100'
                       )}
                     >
