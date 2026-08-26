@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import SmartImage from '../ui/SmartImage.jsx'
 import { Heart, ShoppingBag } from 'lucide-react'
@@ -11,6 +11,7 @@ import { useUiStore } from '../../store/uiStore.js'
 function ProductCard({ product, index = 0 }) {
   const add = useCartStore((s) => s.add)
   const toast = useUiStore((s) => s.toast)
+  const navigate = useNavigate()
   const wished = useWishlistStore((s) => s.ids.includes(product._id))
   const toggleWish = useWishlistStore((s) => s.toggle)
   const soldOut = product.stock <= 0
@@ -18,8 +19,11 @@ function ProductCard({ product, index = 0 }) {
   const quickAdd = (e) => {
     e.preventDefault()
     e.stopPropagation()
-    if (product.sizes?.length > 1) return
     if (soldOut) return
+    if (product.sizes?.length > 1) {
+      navigate(`/product/${product.slug}`)
+      return
+    }
     const size = product.sizes[0] || ''
     add(product, size, 1)
     toast('Added to cart', 'success')
@@ -55,7 +59,7 @@ function ProductCard({ product, index = 0 }) {
             onClick={wish}
             aria-label="Toggle wishlist"
             className={cn(
-              'absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full border backdrop-blur-md transition-all duration-300',
+              'absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full border backdrop-blur-md transition-all duration-300 tap-show',
               wished
                 ? 'border-transparent bg-silver text-black opacity-100'
                 : 'border-white/20 bg-black/40 text-zinc-300 opacity-0 hover:text-white group-hover:opacity-100'
@@ -87,7 +91,7 @@ function ProductCard({ product, index = 0 }) {
             <motion.button
               onClick={quickAdd}
               whileTap={{ scale: 0.95 }}
-              className="absolute inset-x-3 bottom-3 flex h-10 translate-y-[130%] items-center justify-center gap-2 rounded-full bg-gradient-to-b from-[#ececf1] to-[#c6c6cc] text-xs font-semibold uppercase tracking-widest text-black transition-transform duration-300 ease-out group-hover:translate-y-0"
+              className="absolute inset-x-3 bottom-3 flex h-10 translate-y-[130%] items-center justify-center gap-2 rounded-full bg-gradient-to-b from-[#ececf1] to-[#c6c6cc] text-xs font-semibold uppercase tracking-widest text-black transition-transform duration-300 ease-out tap-show group-hover:translate-y-0"
             >
               <ShoppingBag size={14} />
               {product.sizes?.length > 1 ? 'Pick a size' : 'Quick add'}

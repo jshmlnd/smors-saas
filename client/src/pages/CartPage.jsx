@@ -38,7 +38,7 @@ export default function CartPage() {
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-4 pb-24 pt-28 md:px-6 md:pt-36">
+    <div className="mx-auto max-w-6xl px-4 pb-36 pt-28 md:px-6 md:pt-36 lg:pb-24">
       <motion.h1
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
@@ -141,6 +141,18 @@ export default function CartPage() {
             Keep thrifting
           </Link>
         </aside>
+      </div>
+
+      <div className="action-bar lg:hidden">
+        <div className="min-w-0">
+          <p className="text-[0.58rem] font-semibold uppercase tracking-[0.22em] text-zinc-500">
+            Subtotal · {items.reduce((n, i) => n + i.qty, 0)} pc{items.reduce((n, i) => n + i.qty, 0) === 1 ? '' : 's'}
+          </p>
+          <p className="font-display text-xl tracking-wide">{peso(subtotal)}</p>
+        </div>
+        <Link to="/checkout" className="btn-silver h-12 flex-1 !px-4">
+          Checkout <ArrowRight size={15} />
+        </Link>
       </div>
     </div>
   )

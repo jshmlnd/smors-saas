@@ -14,8 +14,8 @@ export default function Footer() {
         />
       </div>
 
-      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 md:grid-cols-4 md:px-6">
-        <div>
+      <div className="mx-auto grid max-w-7xl grid-cols-2 gap-10 px-4 py-14 md:grid-cols-4 md:px-6">
+        <div className="col-span-2 md:col-span-1">
           <Link to="/" className="flex items-baseline gap-1">
             <span className="font-display text-3xl tracking-widest">SMORS</span>
             <span className="h-2 w-2 rounded-full bg-gradient-to-br from-[#ececf1] to-[#9a9aa3]" />
@@ -83,7 +83,7 @@ export default function Footer() {
           </ul>
         </nav>
 
-        <div>
+        <div className="col-span-2 md:col-span-1">
           <h4 className="field-label">The Vibe</h4>
           <p className="mt-2 font-display text-xl uppercase leading-tight tracking-wide">
             Hustle<span className="text-silver"> · </span>Lifestyle<span className="text-silver"> · </span>Balance

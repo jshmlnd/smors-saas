@@ -78,7 +78,7 @@ export default function ProductDetailPage() {
   }
 
   return (
-    <div className="mx-auto max-w-7xl px-4 pb-24 pt-28 md:px-6 md:pt-36">
+    <div className="mx-auto max-w-7xl px-4 pb-32 pt-28 md:px-6 md:pt-36 lg:pb-24">
       {state === 'loading' && (
         <div className="py-32">
           <Loader label="PULLING IT OFF THE RACK" />
@@ -220,7 +220,7 @@ export default function ProductDetailPage() {
                 </span>
               </div>
 
-              <div className="mt-7 flex gap-3">
+              <div className="mt-7 hidden gap-3 lg:flex">
                 <motion.button
                   whileTap={{ scale: 0.97 }}
                   onClick={handleAdd}
@@ -299,6 +299,42 @@ export default function ProductDetailPage() {
             </div>
           </section>
         </motion.div>
+      )}
+
+      {state === 'done' && product && (
+        <div className="action-bar lg:hidden">
+          <div className="min-w-0">
+            <p className="text-[0.58rem] font-semibold uppercase tracking-[0.22em] text-zinc-500">
+              {soldOut ? 'Price' : 'Total'}
+            </p>
+            <div className="flex items-baseline gap-2">
+              <span className={cn('font-display text-xl tracking-wide', soldOut && 'text-zinc-600 line-through')}>
+                {peso(product.price)}
+              </span>
+              {product.compareAtPrice > product.price && !soldOut && (
+                <span className="text-xs text-zinc-500 line-through">{peso(product.compareAtPrice)}</span>
+              )}
+            </div>
+          </div>
+          <button
+            onClick={() => toggleWish(product._id)}
+            aria-label="Toggle wishlist"
+            className={cn(
+              'grid h-11 w-11 shrink-0 place-items-center rounded-full border transition-all',
+              wished ? 'border-transparent bg-silver text-black' : 'border-white/15 text-zinc-300'
+            )}
+          >
+            <Heart size={19} className={wished ? 'fill-current' : ''} />
+          </button>
+          <motion.button
+            whileTap={{ scale: 0.97 }}
+            onClick={handleAdd}
+            disabled={soldOut}
+            className="btn-silver h-12 flex-1 !px-4"
+          >
+            <ShoppingBag size={17} /> {soldOut ? 'Sold Out' : 'Add to Cart'}
+          </motion.button>
+        </div>
       )}
     </div>
   )

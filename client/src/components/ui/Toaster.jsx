@@ -5,7 +5,7 @@ export default function Toaster() {
   const toasts = useUiStore((s) => s.toasts)
 
   return (
-    <div className="fixed bottom-6 left-1/2 z-[90] flex -translate-x-1/2 flex-col items-center gap-2 pointer-events-none">
+    <div className="fixed bottom-24 left-1/2 z-[90] flex -translate-x-1/2 flex-col items-center gap-2 pointer-events-none lg:bottom-6">
       <AnimatePresence>
         {toasts.map((t) => (
           <motion.div

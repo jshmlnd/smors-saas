@@ -64,12 +64,38 @@
 
 html {
   scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
   background-color: var(--color-base-100);
   color: var(--color-base-content);
   overflow-x: hidden;
+}
+
+button,
+a,
+summary,
+label,
+[role='button'] {
+  touch-action: manipulation;
+}
+
+/* Keep native controls readable on phones — also prevents iOS auto-zoom on focus */
+@media (max-width: 639px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* Controls hidden behind hover (product card heart / quick add) must be reachable on touch */
+@media (hover: none) {
+  .tap-show {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+  }
 }
 
 body::before {
@@ -213,6 +239,26 @@ select option {
 
   .section-pad {
     padding-block: clamp(4rem, 9vw, 7.5rem);
+  }
+
+  /* Fixed mobile action bar (product buy bar, cart/checkout bars) */
+  .action-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 70;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(10, 10, 12, 0.92);
+    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(18px);
+    padding-top: 0.7rem;
+    padding-bottom: calc(0.7rem + env(safe-area-inset-bottom, 0px));
+    padding-left: max(1rem, env(safe-area-inset-left, 0px));
+    padding-right: max(1rem, env(safe-area-inset-right, 0px));
   }
 }
 

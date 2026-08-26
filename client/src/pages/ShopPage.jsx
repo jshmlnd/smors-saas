@@ -83,7 +83,7 @@ export default function ShopPage() {
       </motion.div>
 
       <div className="top-16 z-30 -mx-4 mb-10 border-y border-white/8 bg-base-100/90 px-4 py-3 backdrop-blur-xl md:top-[4.5rem] md:-mx-6 md:px-6">
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex flex-col gap-2.5 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-1 gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             <button
               onClick={() => update('category', '')}
@@ -103,7 +103,7 @@ export default function ShopPage() {
             ))}
           </div>
 
-          <label className="relative hidden shrink-0 items-center sm:flex">
+          <label className="relative flex shrink-0 items-center self-end sm:self-auto">
             <select
               value={sort}
               onChange={(e) => update('sort', e.target.value === 'newest' ? '' : e.target.value)}

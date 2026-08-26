@@ -154,6 +154,39 @@ export default function Hero() {
               </div>
             ))}
           </motion.div>
+
+          {products.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 1.15, ease: EASE }}
+              className="mt-10 lg:hidden"
+            >
+              <p className="field-label !mb-3">Fresh on the rack</p>
+              <div className="-mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                {products.map((product) => (
+                  <Link
+                    key={product._id}
+                    to={`/product/${product.slug}`}
+                    className="group w-36 shrink-0 snap-start overflow-hidden rounded-xl border border-white/12 bg-zinc-950"
+                  >
+                    <SmartImage
+                      src={product.images?.[0]}
+                      alt={product.name}
+                      category={product.category}
+                      className="aspect-square w-full transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <div className="flex items-center justify-between gap-2 px-2.5 py-2">
+                      <span className="truncate text-[0.55rem] font-semibold uppercase tracking-widest text-zinc-300">
+                        {product.name}
+                      </span>
+                      <span className="shrink-0 font-display text-xs text-silver">{peso(product.price)}</span>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </motion.div>
+          )}
         </div>
 
         <div className="relative hidden min-h-[420px] lg:block">

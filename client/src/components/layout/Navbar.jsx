@@ -333,7 +333,7 @@ export default function Navbar() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
               transition={{ delay: 0.65, duration: 0.5 }}
-              className="flex items-center gap-3 px-8 pb-10 text-[0.65rem] uppercase tracking-[0.35em] text-zinc-600"
+              className="flex items-center gap-3 px-8 pb-[calc(2.5rem+env(safe-area-inset-bottom))] text-[0.65rem] uppercase tracking-[0.35em] text-zinc-600"
             >
               Hustle <span className="h-1 w-1 rotate-45 bg-silver/60" /> Lifestyle{' '}
               <span className="h-1 w-1 rotate-45 bg-silver/60" /> Balance

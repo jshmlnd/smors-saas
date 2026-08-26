@@ -128,7 +128,7 @@ export default function CheckoutPage() {
   const selectedShipping = SHIPPING_METHODS.find((m) => m.id === shippingMethod)
 
   return (
-    <div className="mx-auto max-w-5xl px-4 pb-24 pt-28 md:px-6 md:pt-36">
+    <div className="mx-auto max-w-5xl px-4 pb-36 pt-28 md:px-6 md:pt-36 lg:pb-24">
       <motion.h1
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
@@ -342,7 +342,7 @@ export default function CheckoutPage() {
             </motion.div>
           </AnimatePresence>
 
-          <div className="flex items-center justify-between gap-3 border-t border-white/8 p-6 md:px-8">
+          <div className="hidden items-center justify-between gap-3 border-t border-white/8 p-6 md:px-8 lg:flex">
             <button
               type="button"
               onClick={() => (step === 0 ? navigate('/cart') : go(step - 1))}
@@ -382,6 +382,31 @@ export default function CheckoutPage() {
             Continue shopping
           </Link>
         </aside>
+      </div>
+
+      <div className="action-bar lg:hidden">
+        <button
+          type="button"
+          onClick={() => (step === 0 ? navigate('/cart') : go(step - 1))}
+          className="btn-ghost h-12 shrink-0 !px-5 !text-[0.68rem]"
+        >
+          Back
+        </button>
+        <div className="min-w-0 flex-1 text-center">
+          <p className="text-[0.58rem] font-semibold uppercase tracking-[0.22em] text-zinc-500">Total</p>
+          <motion.span key={total} initial={{ scale: 1.08 }} animate={{ scale: 1 }} className="font-display text-xl leading-tight tracking-wide text-silver">
+            {peso(total)}
+          </motion.span>
+        </div>
+        {step < 3 ? (
+          <button type="button" onClick={() => go(step + 1)} className="btn-silver h-12 shrink-0 !px-6 !text-[0.72rem]">
+            Continue <ArrowRight size={14} />
+          </button>
+        ) : (
+          <button type="button" onClick={placeOrder} disabled={placing} className="btn-silver h-12 shrink-0 !px-6 !text-[0.72rem]">
+            {placing ? 'Placing…' : 'Place Order'}
+          </button>
+        )}
       </div>
     </div>
   )
