@@ -142,7 +142,7 @@ function BeforeAfter() {
           className="relative aspect-[16/9] cursor-ew-resize select-none overflow-hidden rounded-2xl border border-white/10"
         >
           <img
-            src="https://scontent.fcrk3-4.fna.fbcdn.net/v/t39.30808-6/785277507_1065613952507960_3267590257961567777_n.jpg?stp=cp6_dst-jpg_tt6&cstp=mx1080x1350&ctp=s1080x1350&_nc_cat=109&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFVoN5WTI41mFzQK24RBamFp24-xcNhofKnbj7Fw2Gh8uxeBNlv49x7q7AF3pgA0doRXEBfVBMFCM8WvGbjS8x6&_nc_ohc=fcopWOYDVqkQ7kNvwGk2D9c&_nc_oc=AdrdtGyAk1psT4qTT-6Lxvq_aEOiIMNLdBcxQjfjfdPsxo7DLOrFbd7OC-UozqEcvhbAkIVHPGP780K5CIEl8mFk&_nc_zt=23&_nc_ht=scontent.fcrk3-4.fna&_nc_gid=3pAPv2pakQA1W8ofE9GuAQ&_nc_ss=7b2a8&oh=00_AQFdklbD18jHdPivcVY7tdRztN-EPWs8WmIsyDhXCFQz9A&oe=6A944CE0"
+            src="/img/restore-after.jpg"
             alt="Restored sneakers"
             draggable={false}
             className="absolute inset-0 h-full w-full object-cover"
@@ -152,7 +152,7 @@ function BeforeAfter() {
             style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}
           >
             <img
-              src="https://scontent.fcrk3-4.fna.fbcdn.net/v/t39.30808-6/786071048_1065613949174627_7702659685269611611_n.jpg?stp=cp6_dst-jpg_tt6&cstp=mx1080x1350&ctp=s1080x1350&_nc_cat=109&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeHd8BeOu4Ndh1l24AvPOuJv8ekRYRgdSAnx6RFhGB1ICWDRSjkYw0vUz0mrEV_5uWbUDFbQxodXrUIOB1qHhqJo&_nc_ohc=UmOpsnyUAO0Q7kNvwG1itrZ&_nc_oc=AdpOFJUkU3wtmVu5teRZvjWZLbSx9ktTW1pB7Pnp9qMSF76gahLBw9vfxCeaSAUNUIljiuPM8Vb2Up_U4Eeyra8H&_nc_zt=23&_nc_ht=scontent.fcrk3-4.fna&_nc_gid=UyfLOCp6nC2kYlcyQiNfWQ&_nc_ss=7b2a8&oh=00_AQHm_nsWeE6g_JzJO3TT51wxPyKZOYGSMnAyiPNACInGMg&oe=6A944CF8"
+              src="/img/restore-before.jpg"
               alt="Worn sneakers"
               draggable={false}
               className="absolute inset-0 h-full w-full object-cover"
