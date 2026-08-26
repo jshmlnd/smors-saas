@@ -99,7 +99,7 @@ export default function Hero() {
           >
             <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
             <span className="text-[0.62rem] font-semibold uppercase tracking-[0.3em] text-zinc-300">
-              Polangui, Philippines
+              Polangui, PH
             </span>
           </motion.div>
 
