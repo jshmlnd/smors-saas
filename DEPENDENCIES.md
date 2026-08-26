@@ -33,8 +33,6 @@ To connect database to website:
    |---|---|
    | `JWT_SECRET` | Any long random text (this signs admin logins). Example generator: type random letters/numbers, 40+ characters |
    | `CLIENT_ORIGINS` | Your storefront address(es), comma-separated — e.g. `https://smors-collection.workers.dev` (add your real domain here later when you buy one) |
-   | `ADMIN_EMAIL` | The email you will use to log into the admin dashboard |
-   | `ADMIN_PASSWORD` | The password you will use to log into the admin dashboard — make it strong |
    | `CLOUDINARY_CLOUD_NAME` | From Step 3 below |
    | `CLOUDINARY_API_KEY` | From Step 3 below |
    | `CLOUDINARY_API_SECRET` | From Step 3 below |
