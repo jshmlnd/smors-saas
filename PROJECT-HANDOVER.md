@@ -3,8 +3,8 @@
 Complete technical and operations handover for the SMORS Collection e-commerce platform
 (thrifted/pre-loved fashion storefront + restoration/customs service intake + admin back office).
 
-> Companion doc: `DEPENDENCIES.md` (local working draft, not yet committed) — step-by-step
-> checklist for moving the hosting accounts (Cloudflare, MongoDB) into the owner's name.
+> Companion doc: [`DEPENDENCIES.md`](./DEPENDENCIES.md) — step-by-step checklist for moving the
+> hosting accounts (Cloudflare, MongoDB, Render, Cloudinary) into the owner's name.
 > This file covers everything else.
 
 ---
@@ -287,7 +287,7 @@ listings, open requests.
 
 ## 12. Ownership transfer checklist
 
-Detailed click-by-click for steps 1–2 lives in `DEPENDENCIES.md` (untracked local draft).
+Detailed click-by-click for steps 1–2 lives in [`DEPENDENCIES.md`](./DEPENDENCIES.md).
 
 1. **GitHub** — transfer repo `jshmlnd/smors-saas` (Settings → Danger Zone → Transfer) or add
    owner as collaborator. Render + Cloudflare deployments follow the repo connection.
