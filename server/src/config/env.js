@@ -2,7 +2,13 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
-const parseList = (v) => (v ? v.split(',').map((s) => s.trim()).filter(Boolean) : [])
+const parseList = (v) =>
+  v
+    ? v
+        .split(',')
+        .map((s) => s.trim().toLowerCase().replace(/\/+$/, ''))
+        .filter(Boolean)
+    : []
 
 export const env = {
   NODE_ENV: process.env.NODE_ENV || 'development',
